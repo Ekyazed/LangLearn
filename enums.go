@@ -3,46 +3,16 @@ package main
 import "time"
 
 var (
-	APPR1 = func() *time.Time {
-		h := time.Now().Add(time.Hour * 4)
-		return &h
-	}
-	APPR2 = func() *time.Time {
-		h := time.Now().Add(time.Hour * 8)
-		return &h
-	}
-	APPR3 = func() *time.Time {
-		h := time.Now().Add(time.Hour * 24)
-		return &h
-	}
-	APPR4 = func() *time.Time {
-		h := time.Now().Add(time.Hour * 24 * 2)
-		return &h
-	}
-	CONN1 = func() *time.Time {
-		h := time.Now().Add(time.Hour * 24 * 7)
-		return &h
-	}
-	CONN2 = func() *time.Time {
-		h := time.Now().Add(time.Hour * 24 * 7 * 2)
-		return &h
-	}
-	MTRE1 = func() *time.Time {
-		h := time.Now().Add(time.Hour * 24 * 7 * 4)
-		return &h
-	}
-	MTRE2 = func() *time.Time {
-		h := time.Now().Add(time.Hour * 24 * 7 * 4 * 2)
-		return &h
-	}
-	EXP1 = func() *time.Time {
-		h := time.Now().Add(time.Hour * 24 * 7 * 4 * 4)
-		return &h
-	}
-	EXP2 = func() *time.Time {
-		h := time.Now().Add(time.Hour * 24 * 7 * 4 * 12)
-		return &h
-	}
+	APPR1 = func() time.Time { return time.Now().Add(time.Hour * 4) }
+	APPR2 = func() time.Time { return time.Now().Add(time.Hour * 8) }
+	APPR3 = func() time.Time { return time.Now().AddDate(0, 0, 1) }
+	APPR4 = func() time.Time { return time.Now().AddDate(0, 0, 2) }
+	CONN1 = func() time.Time { return time.Now().AddDate(0, 0, 7) }
+	CONN2 = func() time.Time { return time.Now().AddDate(0, 0, 14) }
+	MTRE1 = func() time.Time { return time.Now().AddDate(0, 1, 0) }
+	MTRE2 = func() time.Time { return time.Now().AddDate(0, 2, 0) }
+	EXP1  = func() time.Time { return time.Now().AddDate(0, 4, 0) }
+	EXP2  = func() time.Time { return time.Now().AddDate(1, 0, 0) }
 )
 
 const (

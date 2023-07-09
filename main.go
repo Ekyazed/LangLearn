@@ -2,5 +2,6 @@ package main
 
 func main() {
 	list := InitApplication()
-	LancementExercice(list)
+	list = LancementExercice(list)
+	FinalisationExercice(list)
 }

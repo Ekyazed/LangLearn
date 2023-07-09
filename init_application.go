@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"time"
 )
 
 func InitApplication() []JsonSaveModel {
@@ -16,6 +17,8 @@ func InitApplication() []JsonSaveModel {
 	fmt.Print("Renseigner le chemin de votre fichier (appuyer sur \"entrer\" pour passer) \n")
 	fmt.Scanln(&path)
 
+	jsonList = GetDataFromSave()
+
 	if path != "" {
 		fmt.Println("\nRécupération de la liste depuis votre fichier")
 		file, _ := os.Open(path)
@@ -26,9 +29,7 @@ func InitApplication() []JsonSaveModel {
 		for scanner.Scan() {
 			list = append(list, scanner.Text())
 		}
-
-		progress := GetDataFromSave()
-		if len(progress) == 0 {
+		if len(jsonList) == 0 {
 			for index, line := range list {
 				if index%2 == 0 {
 					lastString = line
@@ -37,13 +38,13 @@ func InitApplication() []JsonSaveModel {
 						Element:           lastString,
 						Reponse:           line,
 						Niveau:            FRESH,
-						ProchaineEcheance: nil,
+						ProchaineEcheance: time.Now().AddDate(0, 0, -1),
 					}
 					jsonList = append(jsonList, newSave)
 				}
 			}
 		} else {
-			for _, save := range progress {
+			for _, save := range jsonList {
 				for index, line := range list {
 					if index%2 == 0 {
 						if save.Element == line {
@@ -56,7 +57,7 @@ func InitApplication() []JsonSaveModel {
 							Element:           lastString,
 							Reponse:           line,
 							Niveau:            FRESH,
-							ProchaineEcheance: nil,
+							ProchaineEcheance: time.Now().AddDate(0, 0, -1),
 						}
 						jsonList = append(jsonList, newSave)
 					}
@@ -65,6 +66,6 @@ func InitApplication() []JsonSaveModel {
 		}
 
 	}
-	return jsonList
+	return FilterForSelection(jsonList)
 
 }

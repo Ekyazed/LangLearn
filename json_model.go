@@ -7,14 +7,30 @@ import (
 )
 
 type JsonSaveModel struct {
-	Element           string     `json:"element"`
-	Reponse           string     `json:"reponse"`
-	Niveau            string     `json:"niveau"`
-	ProchaineEcheance *time.Time `json:"prochaine_echeance"`
+	Element           string    `json:"element"`
+	Reponse           string    `json:"reponse"`
+	Niveau            string    `json:"niveau"`
+	ProchaineEcheance time.Time `json:"prochaine_echeance"`
+}
+
+func FilterForSelection(data []JsonSaveModel) []JsonSaveModel {
+	var filtered []JsonSaveModel
+	for _, question := range data {
+		isSelectable := time.Now().After(question.ProchaineEcheance)
+		if question.Niveau != BURNED && isSelectable {
+			filtered = append(filtered, question)
+		}
+	}
+	return filtered
 }
 
 func GetDataFromSave() []JsonSaveModel {
-	readData, err := os.ReadFile("save/data.json")
+	if _, err := os.Stat("data.json"); err != nil {
+		file, _ := os.OpenFile("data.json", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+		file.Write([]byte("[]"))
+		file.Close()
+	}
+	readData, err := os.ReadFile("data.json")
 	if err != nil {
 		panic(err)
 	}
@@ -33,7 +49,7 @@ func SaveData(data []JsonSaveModel) error {
 	if err != nil {
 		panic(err)
 	}
-	file, err := os.OpenFile("save/data.json", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	file, err := os.OpenFile("data.json", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
 	}
@@ -81,7 +97,7 @@ func HandleAnswerUpLevel(item JsonSaveModel) JsonSaveModel {
 		item.ProchaineEcheance = EXP2()
 	case EXPERT2:
 		item.Niveau = BURNED
-		item.ProchaineEcheance = nil
+		item.ProchaineEcheance = time.Now().AddDate(100, 0, 0)
 
 	}
 

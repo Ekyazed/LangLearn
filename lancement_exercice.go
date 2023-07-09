@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"github.com/eiannone/keyboard"
 	"github.com/fatih/color"
-	"log"
 	"math/rand"
 	"os"
 	"strconv"
 	"strings"
 )
 
-func LancementExercice(list []JsonSaveModel) {
+func LancementExercice(list []JsonSaveModel) []JsonSaveModel {
 	var itemPassed = 0
 	var completedItem []JsonSaveModel
 	listLength := len(list)
@@ -71,10 +70,10 @@ func LancementExercice(list []JsonSaveModel) {
 
 	}
 
-	if err := SaveData(completedItem); err != nil {
-		log.Fatal("Erreur pendant la sauvegarde des données :", err)
-	}
-
 	fmt.Printf("La session est terminer ! appuyer sur entré pour fermer la fenêtre")
 	keyboard.GetSingleKey()
+
+	fmt.Println("\nFinalisation de la mise a jour de la liste")
+
+	return completedItem
 }
