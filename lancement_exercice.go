@@ -20,7 +20,7 @@ func LancementExercice(list []JsonSaveModel) []JsonSaveModel {
 	fmt.Printf("\nC'est parti !\n")
 	fmt.Println("")
 
-	errHandle := make(map[int]int)
+	errHandle := make(map[string]int)
 
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -45,17 +45,18 @@ func LancementExercice(list []JsonSaveModel) []JsonSaveModel {
 		}
 
 		if goodAnswer {
-			if value, exist := errHandle[index]; !exist {
+			if value, exist := errHandle[list[index].Element]; !exist {
 				list[index] = HandleAnswerUpLevel(list[index])
 				color.Green("Bien jouer. Cette question est maintenant au niveau " + list[index].Niveau)
 			} else if value == 1 {
+				list[index] = HandleAnswerSameLevel(list[index])
 				color.HiYellow("Bien jouer. Vous avez raté " + strconv.Itoa(value) + " fois. vous restez au niveau " + list[index].Niveau)
 			}
 			completedItem = append(completedItem, list[index])
 			list = append(list[:index], list[index+1:]...)
 			itemPassed++
 		} else {
-			value, exist := errHandle[index]
+			value, exist := errHandle[list[index].Element]
 			if exist && (value+1 == 2) {
 				list[index] = HandleAnswerDownLevel(list[index])
 				color.Red("Raté. la bonne réponse est " + list[index].Reponse + ". Vous êtes tombé au niveau " + list[index].Niveau)
@@ -63,7 +64,7 @@ func LancementExercice(list []JsonSaveModel) []JsonSaveModel {
 				list = append(list[:index], list[index+1:]...)
 				itemPassed++
 			} else if !exist {
-				errHandle[index] = 1
+				errHandle[list[index].Element] = 1
 				color.Red("Dommage, réessayez plus tard")
 			}
 		}

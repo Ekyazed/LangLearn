@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -18,6 +19,8 @@ func InitApplication() []JsonSaveModel {
 	fmt.Scanln(&path)
 
 	jsonList = GetDataFromSave()
+	count := FilterForSelection(jsonList)
+	fmt.Printf("\nNombre d'éléments sauvegarder: %s, nombre d'éléments sauvegarder prêt pour le passage: %s", strconv.Itoa(len(jsonList)), strconv.Itoa(len(count)))
 
 	if path != "" {
 		fmt.Println("\nRécupération de la liste depuis votre fichier")
@@ -44,15 +47,18 @@ func InitApplication() []JsonSaveModel {
 				}
 			}
 		} else {
-			for _, save := range jsonList {
-				for index, line := range list {
-					if index%2 == 0 {
-						if save.Element == line {
-							continue
-						} else {
-							lastString = line
+			for index, line := range list {
+				if index%2 == 0 {
+					lastString = line
+				} else {
+					var exist = false
+					for _, item := range jsonList {
+						if item.Element == lastString {
+							exist = true
+							break
 						}
-					} else {
+					}
+					if !exist {
 						newSave := JsonSaveModel{
 							Element:           lastString,
 							Reponse:           line,
@@ -63,8 +69,8 @@ func InitApplication() []JsonSaveModel {
 					}
 				}
 			}
-		}
 
+		}
 	}
 	return FilterForSelection(jsonList)
 

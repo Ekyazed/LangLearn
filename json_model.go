@@ -138,3 +138,31 @@ func HandleAnswerDownLevel(item JsonSaveModel) JsonSaveModel {
 
 	return item
 }
+
+func HandleAnswerSameLevel(item JsonSaveModel) JsonSaveModel {
+	switch item.Niveau {
+	case APPRENTISSAGE1:
+		item.ProchaineEcheance = APPR1()
+	case APPRENTISSAGE2:
+		item.ProchaineEcheance = APPR2()
+	case APPRENTISSAGE3:
+		item.ProchaineEcheance = APPR3()
+	case APPRENTISSAGE4:
+		item.ProchaineEcheance = APPR4()
+	case CONNAISSEUR1:
+		item.ProchaineEcheance = CONN1()
+	case CONNAISSEUR2:
+		item.ProchaineEcheance = CONN2()
+	case MAITRE1:
+		item.ProchaineEcheance = MTRE1()
+	case MAITRE2:
+		item.ProchaineEcheance = MTRE2()
+	case EXPERT1:
+		item.ProchaineEcheance = EXP1()
+	case EXPERT2:
+		item.ProchaineEcheance = EXP2()
+
+	}
+
+	return item
+}
